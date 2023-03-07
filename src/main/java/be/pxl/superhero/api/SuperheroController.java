@@ -29,9 +29,9 @@ public class SuperheroController {
 	}
 
 	@GetMapping("/{superheroId}")
-	public SuperheroDTO2 getSuperheroById(@PathVariable Long superheroId) {
-		SuperheroDTO superheroById = superheroService.findSuperheroById(superheroId);
-		return new SuperheroDTO2(superheroById.id(), superheroById.firstName(), superheroById.lastName(), superheroById.superheroName());
+	public SuperheroDetailDTO getSuperheroById(@PathVariable Long superheroId) {
+		SuperheroDetailDTO superheroById = superheroService.findSuperheroById(superheroId);
+		return superheroById;
 	}
 	
 	@PostMapping
@@ -53,9 +53,15 @@ public class SuperheroController {
 	@GetMapping(value = "/{superheroId}/idcard", produces = MediaType.APPLICATION_PDF_VALUE)
 	public @ResponseBody byte[] requestSuperheroIdCard(@PathVariable Long superheroId) {
 
-		SuperheroDTO superhero = superheroService.findSuperheroById(superheroId);
+		SuperheroDetailDTO superhero = superheroService.findSuperheroById(superheroId);
 		ByteArrayInputStream bis = superheroIdCardGenerator.superheroIdCard(superhero);
 
 		return bis.readAllBytes();
+	}
+
+	@PostMapping("add-superhero-to-mission")
+	public ResponseEntity<Void> addSuperheroToMission(@RequestBody SuperheroMissionRequest heroMissionRequest) {
+		superheroService.addSuperheroToMission(heroMissionRequest.superheroId(), heroMissionRequest.missionId());
+		return new ResponseEntity<>(HttpStatus.ACCEPTED);
 	}
 }

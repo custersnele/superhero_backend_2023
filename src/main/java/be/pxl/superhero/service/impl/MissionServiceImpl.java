@@ -1,8 +1,11 @@
 package be.pxl.superhero.service.impl;
 
 import be.pxl.superhero.api.MissionDTO;
+import be.pxl.superhero.api.MissionDetailDTO;
 import be.pxl.superhero.api.MissionRequest;
+import be.pxl.superhero.api.SuperheroDTO;
 import be.pxl.superhero.domain.Mission;
+import be.pxl.superhero.domain.Superhero;
 import be.pxl.superhero.exception.ResourceNotFoundException;
 import be.pxl.superhero.repository.MissionRepository;
 import be.pxl.superhero.service.MissionService;
@@ -31,8 +34,8 @@ public class MissionServiceImpl implements MissionService {
 	}
 
 	@Override
-	public MissionDTO findMissionById(Long missionId) {
-		return missionRepository.findById(missionId).map(this::mapToDto).orElseThrow(() -> new ResourceNotFoundException("Mission", "ID", missionId));
+	public MissionDetailDTO findMissionById(Long missionId) {
+		return missionRepository.findById(missionId).map(this::mapToMissionDetail).orElseThrow(() -> new ResourceNotFoundException("Mission", "ID", missionId));
 	}
 
 	@Override
@@ -68,5 +71,13 @@ public class MissionServiceImpl implements MissionService {
 
 	private MissionDTO mapToDto(Mission mission) {
 		return new MissionDTO(mission.getId(), mission.getName(), mission.isCompleted());
+	}
+
+	private MissionDetailDTO mapToMissionDetail(Mission mission) {
+		return new MissionDetailDTO(mission.getId(), mission.getName(), mission.isCompleted(), mission.getSuperheroes().stream().map(this::mapToSuperhero).toList());
+	}
+
+	private SuperheroDTO mapToSuperhero(Superhero superhero) {
+		return new SuperheroDTO(superhero.getId(), superhero.getFirstName(), superhero.getLastName(), superhero.getSuperheroName());
 	}
 }

@@ -1,6 +1,6 @@
 package be.pxl.superhero.service.impl;
 
-import be.pxl.superhero.api.SuperheroDTO;
+import be.pxl.superhero.api.SuperheroDetailDTO;
 import be.pxl.superhero.commons.Cipher;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
@@ -30,7 +30,7 @@ import java.nio.file.Paths;
 public class SuperheroIdCardGenerator {
     private static final Logger logger = LoggerFactory.getLogger(SuperheroIdCardGenerator.class);
 
-    public ByteArrayInputStream superheroIdCard(SuperheroDTO superhero) {
+    public ByteArrayInputStream superheroIdCard(SuperheroDetailDTO superhero) {
 
         ByteArrayOutputStream out = new ByteArrayOutputStream();
 

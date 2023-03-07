@@ -26,7 +26,7 @@ public final class MissionController {
 	}
 
 	@GetMapping("/{missionId}")
-	public MissionDTO getMissionById(@PathVariable Long missionId) {
+	public MissionDetailDTO getMissionById(@PathVariable Long missionId) {
 		return missionService.findMissionById(missionId);
 	}
 	
